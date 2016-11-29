@@ -1,6 +1,6 @@
 package com.mca.assemblyline.components;
 
-import com.mca.assemblyline.assembly.AssemblyLine;
+import com.mca.assemblyline.assembly.BuilderFactory;
 
 /**
  * This class builds the frame for a car
@@ -13,7 +13,7 @@ public class Frame implements Component, Runnable
     //  instance of this class
     private volatile static Frame instance;
     // assemblyline instance
-    private static AssemblyLine assemblyLine = ComponentFactory.getAssemblyLine();
+    private static BuilderFactory builderFactory = ComponentFactory.getBuilderFactory();
 
     /**
      * The constructor adds the component to be built to the
@@ -21,7 +21,7 @@ public class Frame implements Component, Runnable
      */
     public Frame()
     {
-        assemblyLine.addComponentToBuild(this);
+        builderFactory.addComponentToBuild(this);
     }
 
     /**
@@ -81,6 +81,6 @@ public class Frame implements Component, Runnable
 
         System.out.println("The " + getComponentBuilt() + " has been successfully built.");
         isComponentBuilt = true;
-        assemblyLine.componentCompleteNotifier(this);
+        builderFactory.componentCompleteNotifier(this);
     }
 }

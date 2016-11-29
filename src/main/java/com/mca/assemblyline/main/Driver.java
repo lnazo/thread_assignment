@@ -17,6 +17,6 @@ public class Driver
         System.out.println("Let's get things started.");
         System.out.println("----------------------------------------");
 
-        assemblyLine.buildCar();
+        assemblyLine.startAssemblyLine();
     }
 }

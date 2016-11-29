@@ -1,6 +1,9 @@
 package com.mca.assemblyline.assembly;
 
 import com.mca.assemblyline.components.Component;
+import com.mca.assemblyline.components.ComponentFactory;
+import com.mca.assemblyline.components.Seat;
+import com.mca.assemblyline.components.Tire;
 import java.util.*;
 
 /**
@@ -12,12 +15,12 @@ public class AssemblyLine implements Runnable
 {
     // instance of this class
     private volatile static AssemblyLine instance;
-    // max capacity to ensure only 3 components are built at a time
-    private static final int MAX_CAPACITY = 3;
-    // list of components that are being built
-    private List<Component> componentsUnderConstruction = new ArrayList<>();
-    // queue of components to be built
-    private Queue<Component> neededComponents = new LinkedList<>();
+    // engine and frame components
+    private Component engine;
+    private Component frame;
+    // list to store seats and tires
+    private List<Seat> seats = new ArrayList<>();
+    private List<Tire> tires = new ArrayList<>();
 
     private AssemblyLine()
     {
@@ -44,52 +47,53 @@ public class AssemblyLine implements Runnable
     /**
      * This starts the assembly line
      */
-    public void buildCar()
+    public void startAssemblyLine()
     {
         Thread thread = new Thread(AssemblyLine.getInstance());
         thread.start();
     }
 
     /**
-     * This notifies the assembly line that a new component is to be built, therefore
-     * its added to the list of components under construction
-     * @param component The component to add to the list
+     * This creates a car along with its various components
      */
-    public synchronized void addComponentToBuild(Component component)
+    private void buildCar()
     {
-        if (component != null)
-        {
-            if (componentsUnderConstruction.size() < MAX_CAPACITY)
-            {
-                componentsUnderConstruction.add(component);
-                component.buildComponent();
-            }
+        engine = ComponentFactory.getEngine();
+        frame = ComponentFactory.getFrame();
 
-            else
-                neededComponents.add(component);
-        }
+        seats.add(ComponentFactory.getSeat());
+        seats.add(ComponentFactory.getSeat());
+        seats.add(ComponentFactory.getSeat());
+        seats.add(ComponentFactory.getSeat());
+        seats.add(ComponentFactory.getSeat());
 
-        else
-            System.out.println("An empty object is being added. Let's sort this out.");
+        tires.add(ComponentFactory.getTire());
+        tires.add(ComponentFactory.getTire());
+        tires.add(ComponentFactory.getTire());
+        tires.add(ComponentFactory.getTire());
     }
 
     /**
-     * This notifies the assembly line that a component has been completed, therefore its
-     * removed from the list of components under construction and adds the next component
-     * needed to the queue of needed components
-     * @param component The component to remove from the list and the next one to add
-     * to the queue
+     * This checks if each component has been built
+     * @return Whether the components have been built or not
      */
-    public synchronized void componentCompleteNotifier(Component component)
+    private boolean isComponentBuilt()
     {
-        componentsUnderConstruction.remove(component);
-        Component nextComponent = neededComponents.poll();
-        if (nextComponent != null)
-            addComponentToBuild(nextComponent);
-        if (componentsUnderConstruction.size() == 0 && neededComponents.size() == 0)
+        boolean done = true;
+        done &= engine.isComponentBuilt();
+        done &= frame.isComponentBuilt();
+
+        for (Seat seat : seats)
         {
-            System.out.println("The assembly line is done.");
+            done &= seat.isComponentBuilt();
         }
+
+        for (Tire tire : tires)
+        {
+            done &= tire.isComponentBuilt();
+        }
+
+        return done;
     }
 
     @Override
@@ -97,9 +101,9 @@ public class AssemblyLine implements Runnable
     {
         long startTime = System.currentTimeMillis();
         System.out.println("The process of building a car has begun.");
-        Car car = new Car();
+        buildCar();
 
-        while (!car.isComponentBuilt())
+        while (!isComponentBuilt())
         {
             // components are being added to the car in the buildCar() method
         }

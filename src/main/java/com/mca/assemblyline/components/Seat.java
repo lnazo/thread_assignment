@@ -1,6 +1,6 @@
 package com.mca.assemblyline.components;
 
-import com.mca.assemblyline.assembly.AssemblyLine;
+import com.mca.assemblyline.assembly.BuilderFactory;
 
 /**
  * This class builds the seats for a car
@@ -13,7 +13,7 @@ public class Seat implements Component, Runnable
     // boolean to check if a seat has been built
     private boolean isComponentBuilt;
     // assemblyline instance
-    private static AssemblyLine assemblyLine = ComponentFactory.getAssemblyLine();
+    private static BuilderFactory builderFactory = ComponentFactory.getBuilderFactory();
 
     /**
      * The constructor adds the component to be built to the
@@ -21,7 +21,7 @@ public class Seat implements Component, Runnable
      */
     public Seat()
     {
-        assemblyLine.addComponentToBuild(this);
+        builderFactory.addComponentToBuild(this);
     }
 
     @Override
@@ -67,6 +67,6 @@ public class Seat implements Component, Runnable
         System.out.println(getComponentBuilt() + " " + seatCount + " has been successfully built.");
         incrementCount();
         isComponentBuilt = true;
-        assemblyLine.componentCompleteNotifier(this);
+        builderFactory.componentCompleteNotifier(this);
     }
 }

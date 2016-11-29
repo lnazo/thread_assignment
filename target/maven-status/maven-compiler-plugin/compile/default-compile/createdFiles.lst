@@ -2,8 +2,8 @@ com\mca\assemblyline\components\Seat.class
 com\mca\assemblyline\components\Component.class
 com\mca\assemblyline\components\ComponentFactory.class
 com\mca\assemblyline\components\Tire.class
+com\mca\assemblyline\assembly\BuilderFactory.class
 com\mca\assemblyline\assembly\AssemblyLine.class
 com\mca\assemblyline\components\Frame.class
-com\mca\assemblyline\assembly\Car.class
 com\mca\assemblyline\main\Driver.class
 com\mca\assemblyline\components\Engine.class

@@ -1,6 +1,7 @@
 package com.mca.assemblyline.components;
 
 import com.mca.assemblyline.assembly.AssemblyLine;
+import com.mca.assemblyline.assembly.BuilderFactory;
 
 /**
  * This is the factory for the components
@@ -33,6 +34,15 @@ public class ComponentFactory
     public static AssemblyLine getAssemblyLine()
     {
         return AssemblyLine.getInstance();
+    }
+
+    /**
+     * This represents the builder for the components
+     * @return The builderfactory instance
+     */
+    public static BuilderFactory getBuilderFactory()
+    {
+        return BuilderFactory.getInstance();
     }
 
     /**
